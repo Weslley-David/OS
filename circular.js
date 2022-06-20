@@ -1,7 +1,10 @@
+const input = require('prompt-sync')();
 time_slices = 0;
-str_log = ''
-quantum = 20
-context_swap = 0
+str_log = '';
+//quantum = 20;
+const quantum = Number(input('quantum: '));
+context_swap = 0;
+
 class Processo {
     constructor(nome, execution_time) {
         this.nome = nome;
@@ -28,11 +31,23 @@ function execute(p){
 };
 
 processos = new Array();
+
+while(true){
+    process_name = input('nome do processo: ')
+    process_execution_time = Number(input('nome do processo: '))
+    processos.push(new Processo(process_name, process_execution_time));
+    continue_insert = input('continue? (s/n)')
+    if(continue_insert != 's' && continue_insert != 'S'){
+        break;
+    }
+}
+
+/*
 processos.push(new Processo('P1', 40));
 processos.push(new Processo('P2', 20));
 processos.push(new Processo('P3', 50));
 processos.push(new Processo('P4', 30));
-
+*/
 //console.log(processos)
 //console.log(processos.length)
 
