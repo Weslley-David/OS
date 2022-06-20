@@ -1,6 +1,8 @@
 const input = require('prompt-sync')();
 time_slices = 0;
 str_log = '';
+med_turnaround = 0;
+num_processos = 0;
 //quantum = 20;
 const quantum = Number(input('quantum: '));
 context_swap = 0;
@@ -26,6 +28,7 @@ function execute(p){
     }
     else{
         time_slices = time_slices + p1.execution_time;
+        med_turnaround = med_turnaround + time_slices + (context_swap - 1) * 5;
         str_log = str_log + `${p1.nome}   : ${time_slices + (context_swap - 1) * 5}         : ${time_slices - p1.execution_time_log  + (context_swap - 1) * 5}\n` //5 igual a troca de contexto
     }
 };
@@ -50,8 +53,8 @@ processos.push(new Processo('P4', 30));
 */
 //console.log(processos)
 //console.log(processos.length)
+num_processos = processos.length
 
-i = 0
 while (true) {
     execute(processos[0])
     if(processos.length == 0){
@@ -61,4 +64,4 @@ while (true) {
 console.log(time_slices)
 console.log('nome : turnaround : await')
 console.log(str_log)
-console.log(context_swap)
+console.log('media Turn Around: ',med_turnaround/num_processos)
