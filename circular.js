@@ -2,9 +2,11 @@ const input = require('prompt-sync')();
 time_slices = 0;
 str_log = '';
 med_turnaround = 0;
+med_await = 0
 num_processos = 0;
 //quantum = 20;
 const quantum = Number(input('quantum: '));
+const context_swap_time = Number(input('troca de contexto: '));
 context_swap = 0;
 
 class Processo {
@@ -28,8 +30,9 @@ function execute(p){
     }
     else{
         time_slices = time_slices + p1.execution_time;
-        med_turnaround = med_turnaround + time_slices + (context_swap - 1) * 5;
-        str_log = str_log + `${p1.nome}   : ${time_slices + (context_swap - 1) * 5}         : ${time_slices - p1.execution_time_log  + (context_swap - 1) * 5}\n` //5 igual a troca de contexto
+        med_turnaround = med_turnaround + time_slices + (context_swap - 1) * context_swap_time;
+        med_await = med_await + time_slices - p1.execution_time_log  + (context_swap - 1) * context_swap_time;
+        str_log = str_log + `${p1.nome}   : ${time_slices + (context_swap - 1) * context_swap_time}         : ${time_slices - p1.execution_time_log  + (context_swap - 1) * context_swap_time}\n` //5 igual a troca de contexto
     }
 };
 
@@ -37,7 +40,7 @@ processos = new Array();
 
 while(true){
     process_name = input('nome do processo: ')
-    process_execution_time = Number(input('nome do processo: '))
+    process_execution_time = Number(input('tempo de execução: '))
     processos.push(new Processo(process_name, process_execution_time));
     continue_insert = input('continue? (s/n)')
     if(continue_insert != 's' && continue_insert != 'S'){
@@ -65,3 +68,4 @@ console.log(time_slices)
 console.log('nome : turnaround : await')
 console.log(str_log)
 console.log('media Turn Around: ',med_turnaround/num_processos)
+console.log('media Await: ',med_await/num_processos)
